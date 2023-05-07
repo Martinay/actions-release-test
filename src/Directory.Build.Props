@@ -6,6 +6,12 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <PackageId>github.action.test.martinay</PackageId>
+    <Authors>martinay</Authors>
+    <Company>martinay</Company>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <Version>$(GitVersion_SemVer)</Version>
     <Version Condition="'$(Version)' == ''">0.0.1</Version>
     <FileVersion>$(GitVersion_AssemblySemFileVer)</FileVersion>
