@@ -22,10 +22,10 @@ jobs:
       - name: Restore 
         run: dotnet restore src/sample.app.sln
 
-      - name: Build Fody
+      - name: Build
         run: dotnet build --configuration Release --no-restore src/sample.app.sln
 
-      - name: Test Fody
+      - name: Test
         run: dotnet test --configuration Release --no-build src/sample.app.sln
 
       - name: Upload NuGet
@@ -46,13 +46,13 @@ jobs:
         with:
           dotnet-version: 6
 
-      - name: Restore Fody
+      - name: Restore
         run: dotnet restore src/sample.app.sln
 
-      - name: Build Fody
+      - name: Build
         run: dotnet build --configuration Release --no-restore src/sample.app.sln
 
-      - name: Test Fody
+      - name: Test
         run: dotnet test --configuration Release --no-build src/sample.app.sln
 
   windows-vs:
@@ -68,8 +68,8 @@ jobs:
       - name: Setup VSTest
         uses: darenm/Setup-VSTest@v1.2
 
-      - name: Build Fody
+      - name: Build
         run: msbuild -restore src/sample.app.sln /p:Configuration=Release /verbosity:minimal
 
-      - name: Test Fody
-        run: vstest.console src\sample.app.test\bin\Debug\net6.0\sample.app.test.dll
+      - name: Test
+        run: vstest.console src\sample.app.test\bin\Release\net6.0\sample.app.test.dll
