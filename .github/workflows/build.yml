@@ -7,20 +7,15 @@ env:
   DOTNET_NOLOGO: true
 
 jobs:
-  windows:
-    name: Windows
-    runs-on: windows-latest
+  dotnet:
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    name: dotnet
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
-      - name: Install GitVersion
-        uses: gittools/actions/gitversion/setup@v0.10.2
-        with:
-          versionSpec: '5.x'
-
-      - name: Determine Version
-        uses: gittools/actions/gitversion/execute@v0.10.2
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
@@ -36,39 +31,20 @@ jobs:
       - name: Test
         run: dotnet test --configuration Release --no-build src/sample.app.sln
 
-      - name: Upload NuGet
-        uses: actions/upload-artifact@v3
-        with:
-          name: NuGet
-          path: nugets/*.nupkg
-
-  linux:
-    name: Linux
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: 6
-
-      - name: Restore
-        run: dotnet restore src/sample.app.sln
-
-      - name: Build
-        run: dotnet build --configuration Release --no-restore src/sample.app.sln
-
-      - name: Test
-        run: dotnet test --configuration Release --no-build src/sample.app.sln
-
   windows-vs:
     name: Windows VS
     runs-on: windows-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v0.10.2
+        with:
+          versionSpec: '5.x'
+
+      - name: Determine Version
+        uses: gittools/actions/gitversion/execute@v0.10.2
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1.3.1
@@ -81,3 +57,9 @@ jobs:
 
       - name: Test
         run: vstest.console src\sample.app.test\bin\Release\net6.0\sample.app.test.dll
+        
+      - name: Upload NuGet
+        uses: actions/upload-artifact@v3
+        with:
+          name: NuGet
+          path: nugets/*.nupkg
