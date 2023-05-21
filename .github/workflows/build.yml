@@ -30,6 +30,13 @@ jobs:
 
       - name: Test
         run: dotnet test --configuration Release --no-build src/sample.app.sln
+        
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        if: ${{ matrix.os }} == 'ubuntu-latest'
+        with:
+          name: NuGet
+          path: '**/*.nupkg'
 
   windows-vs:
     name: Windows VS
@@ -59,9 +66,3 @@ jobs:
 
       - name: Test
         run: vstest.console src\sample.app.test\bin\Release\net6.0\sample.app.test.dll
-        
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: NuGet
-          path: '**/*.nupkg'
